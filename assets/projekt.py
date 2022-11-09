@@ -5,25 +5,25 @@ pygame.init()#alustab
 screen=pygame.display.set_mode((1200, 600))#window suurus,,, See tundub suht norm isegi?LAIUSxKÕRGUS
 pygame.display.set_caption('Puuviljamäng')#pealkiri
 clock=pygame.time.Clock()
-proovifont=pygame.font.Font("Mänguprojekt/assets/alagard.ttf", 50)
+proovifont=pygame.font.Font("Desktop/Mänguprojekt/assets/alagard.ttf", 50)
 
-taust=pygame.image.load('Mänguprojekt/assets/manutaust-1.png.png').convert()
+taust=pygame.image.load('Desktop/Mänguprojekt/assets/manutaust-1.png.png').convert()
 
-plika=pygame.image.load('Mänguprojekt/assets/piksliplika/tegelane1-1.png.png').convert_alpha()#100x141 reso vist, ja tundub parim
+plika=pygame.image.load('Desktop/Mänguprojekt/assets/piksliplika/tegelane1-1.png.png').convert_alpha()#100x141 reso vist, ja tundub parim
 plika_rect=plika.get_rect(midbottom=(50, 300))
 
-puud=pygame.image.load('Mänguprojekt/assets/puudkindel-1.png.png').convert_alpha()
+puud=pygame.image.load('Desktop/Mänguprojekt/assets/puudkindel-1.png.png').convert_alpha()
 puud2=puud
 puude_positsioon=0
 
-banaan=pygame.image.load('Mänguprojekt/assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
+banaan=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
 
 
 tekst=proovifont.render('Puuviljaseiklus', False, 'Black')
 tekst2=proovifont.render('Puuviljaseiklus', False, 'Brown')
 
 
-alus1=pygame.image.load('Mänguprojekt/assets/alus1.png').convert_alpha()
+alus1=pygame.image.load('Desktop/Mänguprojekt/assets/alus1.png').convert_alpha()
 alus1_pos=35
 alus2=alus1
 alus2_pos=220
