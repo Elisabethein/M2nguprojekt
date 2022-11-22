@@ -17,10 +17,19 @@ puud2=puud
 puude_positsioon=0
 
 banaan=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
-
+banaan_rect=banaan.get_rect(midright=(100, 60))
 
 tekst=proovifont.render('Puuviljaseiklus', False, 'Black')
 tekst2=proovifont.render('Puuviljaseiklus', False, 'Brown')
+
+viljacounter=0
+puuvilju=proovifont.render(str(viljacounter)+'00', False, 'Brown')
+puuvilju_rect=puuvilju.get_rect(midleft=(100, 60))
+# puuvilju1=proovifont.render('100', False, 'Brown')
+# puuvilju2=proovifont.render('200', False, 'Brown')
+# puuvilju3=proovifont.render('300', False, 'Brown')
+# puuvilju4=proovifont.render('400', False, 'Brown')
+# puuvilju5=proovifont.render('500', False, 'Brown')
 
 
 alus1=pygame.image.load('Desktop/Mänguprojekt/assets/alus1.png').convert_alpha()
@@ -46,22 +55,26 @@ alus55=alus1
 alus55_pos=2230
 
 
-while True:#mäng töötab kogu aeg ja lõppeb kui exit
+while True:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:#suudab quitida
             pygame.quit()
             exit()
     screen.blit(taust,(0,0))
-    #screen.blit(plika, plika_rect)#paneb ruue surface kuhugi
+    #puude osa:
     puude_positsioon-=1
     if puude_positsioon<-1200: puude_positsioon=0
     screen.blit(pygame.transform.scale(puud, (1200,348)), (puude_positsioon,250))
-    #screen.blit(banaan, (300,50))
-    screen.blit(tekst, (450, 50))#Mängu nimi nt üles äärde?
-    screen.blit(tekst2, (453,50))
     screen.blit(pygame.transform.scale(puud2, (1200,348)),(puude_positsioon+1200, 250))
+    #tekstide osa:
+    screen.blit(pygame.transform.scale(banaan, (30,30)), banaan_rect)
 
-    #vääääääga palju kordusi
+    screen.blit(pygame.transform.scale(puuvilju, (50, 30)), (58,18))
+
+    
+    screen.blit(tekst, (450, 50))
+    screen.blit(tekst2, (453,50))
+
     screen.blit(pygame.transform.scale(alus1, (100, 25)), (alus1_pos, 350))
     screen.blit(pygame.transform.scale(alus2, (100, 25)), (alus2_pos, 350))
     screen.blit(pygame.transform.scale(alus3, (100, 25)), (alus3_pos, 325))
@@ -96,5 +109,3 @@ while True:#mäng töötab kogu aeg ja lõppeb kui exit
 
     pygame.display.update()
     clock.tick(90)#mängukiirus
-
-#panna pildid samasse faili et displayd muuta
