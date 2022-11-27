@@ -126,7 +126,7 @@ while True:
         if alus55_pos<-170: alus55_pos=2230
         
         #tegelane
-        player_animation()
+        # player_animation()
 
         plika_gravity+=0.5
         plika_rect.y+=plika_gravity
