@@ -7,7 +7,21 @@ pygame.display.set_caption('Puuviljamäng')#pealkiri
 clock=pygame.time.Clock()
 proovifont=pygame.font.Font("Desktop/Mänguprojekt/assets/alagard.ttf", 50)
 
-game_active=True
+#struktuur?:
+#while True loop
+    #game_active on false ja seal on see algus, niikaua kui pole start vajutatud, on see screen
+    #game_active on True kui vajutad start
+        #kui saad puuviljad kätte, see loop lõppeb ja tuleb lõpu ekraan
+        #lõpu screen, palju õnne juhuuu
+
+
+
+algus=pygame.image.load('Desktop/Mänguprojekt/assets/final-scroll-ver2.png').convert_alpha()
+button1=pygame.image.load('Desktop/Mänguprojekt/assets/character-nupp.png').convert_alpha()
+button2=pygame.image.load('Desktop/Mänguprojekt/assets/start-nupp.png').convert_alpha()
+game_active=False
+
+    
 # def player_animation():
 #     global plika, player_index
 #     if plika_rect.bottom<300:
@@ -79,7 +93,14 @@ while True:
             if event.type==pygame.KEYDOWN:#võimalik on teha üks hüpe ja double-jump aga kui tegelane on juba õhus kõrgel siis ei saa hüpata rohkem
                 if event.key==pygame.K_SPACE and plika_rect.top>=0:
                     plika_gravity=-15
-    if game_active:
+    if game_active==False:
+        screen.blit(taust, (0,0))
+        screen.blit(pygame.transform.scale(algus,(532, 600)), (330,0))
+        screen.blit(pygame.transform.scale(button1, (150,64)), (440, 450))
+        screen.blit(pygame.transform.scale(button2, (150,64)), (600,450))
+        screen.blit(pygame.transform.scale(plika, (90, 143)), (550, 300))
+        #SIIN JÄI POOLELI :D
+    elif game_active:
         #taust
         screen.blit(taust,(0,0))
         #puude osa:
