@@ -1,5 +1,6 @@
 import pygame
 from sys import exit
+import time
 
 pygame.init()#alustab
 screen=pygame.display.set_mode((1200, 600))#window suurus,,, See tundub suht norm isegi?LAIUSxKÕRGUS
@@ -18,7 +19,9 @@ proovifont=pygame.font.Font("Desktop/Mänguprojekt/assets/alagard.ttf", 50)
 
 algus=pygame.image.load('Desktop/Mänguprojekt/assets/final-scroll-ver2.png').convert_alpha()
 button1=pygame.image.load('Desktop/Mänguprojekt/assets/character-nupp.png').convert_alpha()
+button1_rect=button1.get_rect(topleft=(440, 450))
 button2=pygame.image.load('Desktop/Mänguprojekt/assets/start-nupp.png').convert_alpha()
+button2_rect=button2.get_rect(topleft=(600,450))
 game_active=False
 
     
@@ -30,17 +33,18 @@ game_active=False
 
 taust=pygame.image.load('Desktop/Mänguprojekt/assets/manutaust-1.png.png').convert()
 
+tegelane='tüdruk'
 player1=pygame.image.load('Desktop/Mänguprojekt/assets/piksliplika/plika1.png').convert_alpha()
 player2=pygame.image.load('Desktop/Mänguprojekt/assets/piksliplika/plika2.png').convert_alpha()
 player_kõnd=[player1, player2]
 player_index=0
-
 player3=pygame.image.load('Desktop/Mänguprojekt/assets/piksliplika/plika3.png').convert_alpha()
 player4=pygame.image.load('Desktop/Mänguprojekt/assets/piksliplika/plika4.png').convert_alpha()
-
 plika=player_kõnd[player_index]#100x141 reso vist, ja tundub parim
 plika_rect=plika.get_rect(midbottom=(50, 300))
 plika_gravity=0
+
+poiss=pygame.image.load('Desktop/Mänguprojekt/assets/p-seisab.png')
 
 puud=pygame.image.load('Desktop/Mänguprojekt/assets/puudkindel-1.png.png').convert_alpha()
 puud2=puud
@@ -93,14 +97,29 @@ while True:
             if event.type==pygame.KEYDOWN:#võimalik on teha üks hüpe ja double-jump aga kui tegelane on juba õhus kõrgel siis ei saa hüpata rohkem
                 if event.key==pygame.K_SPACE and plika_rect.top>=0:
                     plika_gravity=-15
+        # if event.type==pygame.MOUSEMOTION:
+        if event.type==pygame.MOUSEBUTTONDOWN:
+            if button2_rect.collidepoint(event.pos):
+                game_active=True
+            if button1_rect.collidepoint(event.pos):
+                if tegelane=='tüdruk':
+                    tegelane='poiss'
+                    continue
+                elif tegelane=='poiss':
+                    tegelane='tüdruk'
+                    continue
+
     if game_active==False:
         screen.blit(taust, (0,0))
         screen.blit(pygame.transform.scale(algus,(532, 600)), (330,0))
-        screen.blit(pygame.transform.scale(button1, (150,64)), (440, 450))
-        screen.blit(pygame.transform.scale(button2, (150,64)), (600,450))
-        screen.blit(pygame.transform.scale(plika, (90, 143)), (550, 300))
-        #SIIN JÄI POOLELI :D
-    elif game_active:
+        screen.blit(pygame.transform.scale(button1, (150,64)), button1_rect)
+        screen.blit(pygame.transform.scale(button2, (150,64)), button2_rect)
+        if tegelane=='tüdruk':
+            screen.blit(pygame.transform.scale(plika, (90, 143)), (542, 300))
+        elif tegelane=='poiss':
+            screen.blit(pygame.transform.scale(poiss, (90, 143)), (542, 300))
+
+    if game_active:
         #taust
         screen.blit(taust,(0,0))
         #puude osa:
