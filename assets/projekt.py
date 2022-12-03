@@ -1,6 +1,5 @@
 import pygame
 from sys import exit
-import time
 
 pygame.init()#alustab
 screen=pygame.display.set_mode((1200, 600))#window suurus,,, See tundub suht norm isegi?LAIUSxKÕRGUS
@@ -50,8 +49,19 @@ puud=pygame.image.load('Desktop/Mänguprojekt/assets/puudkindel-1.png.png').conv
 puud2=puud
 puude_positsioon=0
 
+väikebanaan=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
+väikebanaan_rect=väikebanaan.get_rect(midright=(100, 60))
+
 banaan=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
-banaan_rect=banaan.get_rect(midright=(100, 60))
+banaan_rect=banaan.get_rect(midbottom=(1285, 345))
+ananass=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-6.png.png').convert_alpha()
+ananass_rect=ananass.get_rect(midbottom=(2485,345))
+maasikas=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-5.png.png').convert_alpha()
+maasikas_rect=maasikas.get_rect(midbottom=(3685, 345))
+sidrun=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-4.png.png').convert_alpha()
+sidrun_rect=sidrun.get_rect(midbottom=(4885, 345))
+apelsin=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-3.png.png').convert_alpha()
+apelsin_rect=apelsin.get_rect(midbottom=(6085, 345))
 
 tekst=proovifont.render('Puuviljaseiklus', False, 'Black')
 tekst2=proovifont.render('Puuviljaseiklus', False, 'Brown')
@@ -128,11 +138,22 @@ while True:
         screen.blit(pygame.transform.scale(puud, (1200,348)), (puude_positsioon,250))
         screen.blit(pygame.transform.scale(puud2, (1200,348)),(puude_positsioon+1200, 250))
         #tekstide osa:
-        screen.blit(pygame.transform.scale(banaan, (30,30)), banaan_rect)
+        screen.blit(pygame.transform.scale(väikebanaan, (30,30)), väikebanaan_rect)
         screen.blit(pygame.transform.scale(puuvilju, (50, 30)), (58,18))
 
         screen.blit(tekst, (450, 50))
         screen.blit(tekst2, (453,50))
+        #puuviljad
+        screen.blit(pygame.transform.scale(banaan, (80, 91)), banaan_rect)
+        banaan_rect.x-=2
+        screen.blit(pygame.transform.scale(ananass, (76, 100)), ananass_rect)
+        ananass_rect.x-=2
+        screen.blit(pygame.transform.scale(apelsin, (80, 80)), apelsin_rect)
+        apelsin_rect.x-=2
+        screen.blit(pygame.transform.scale(maasikas, (80, 98)), maasikas_rect)
+        maasikas_rect.x-=2
+        screen.blit(pygame.transform.scale(sidrun, (74, 86)), sidrun_rect)
+        sidrun_rect.x-=2
         #alused
         screen.blit(pygame.transform.scale(alus1, (100, 25)), (alus1_pos, 350))
         screen.blit(pygame.transform.scale(alus2, (100, 25)), (alus2_pos, 350))
