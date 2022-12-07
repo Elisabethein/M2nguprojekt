@@ -15,7 +15,6 @@ proovifont=pygame.font.Font("Desktop/Mänguprojekt/assets/alagard.ttf", 50)
         #kui saad puuviljad kätte, see loop lõppeb ja tuleb lõpu ekraan
         #lõpu screen, palju õnne juhuuu
 
-
 #kõik mis on alguses ekraanil
 algus=pygame.image.load('Desktop/Mänguprojekt/assets/final-scroll-ver2.png').convert_alpha()#scroll
 button1=pygame.image.load('Desktop/Mänguprojekt/assets/character-nupp.png').convert_alpha()#character nupp
