@@ -1,8 +1,9 @@
 import pygame
 from sys import exit
+import time
 
 pygame.init()#alustab
-screen=pygame.display.set_mode((1200, 600))#window suurus,,, See tundub suht norm isegi?LAIUSxKÕRGUS
+screen=pygame.display.set_mode((1200, 600))#window suurus
 pygame.display.set_caption('Puuviljamäng')#pealkiri
 clock=pygame.time.Clock()
 proovifont=pygame.font.Font("Desktop/Mänguprojekt/assets/alagard.ttf", 50)
@@ -15,13 +16,13 @@ proovifont=pygame.font.Font("Desktop/Mänguprojekt/assets/alagard.ttf", 50)
         #lõpu screen, palju õnne juhuuu
 
 
-
-algus=pygame.image.load('Desktop/Mänguprojekt/assets/final-scroll-ver2.png').convert_alpha()
-button1=pygame.image.load('Desktop/Mänguprojekt/assets/character-nupp.png').convert_alpha()
+#kõik mis on alguses ekraanil
+algus=pygame.image.load('Desktop/Mänguprojekt/assets/final-scroll-ver2.png').convert_alpha()#scroll
+button1=pygame.image.load('Desktop/Mänguprojekt/assets/character-nupp.png').convert_alpha()#character nupp
 button1_rect=button1.get_rect(topleft=(440, 450))
-button2=pygame.image.load('Desktop/Mänguprojekt/assets/start-nupp.png').convert_alpha()
+button2=pygame.image.load('Desktop/Mänguprojekt/assets/start-nupp.png').convert_alpha()#stardi nupp
 button2_rect=button2.get_rect(topleft=(600,450))
-game_active=False
+game_active=1#märgib seda et alguses oleks üks ekraan
 
     
 # def player_animation():
@@ -45,37 +46,44 @@ plika_gravity=0
 
 poiss=pygame.image.load('Desktop/Mänguprojekt/assets/p-seisab.png')
 
+#puude taust
 puud=pygame.image.load('Desktop/Mänguprojekt/assets/puudkindel-1.png.png').convert_alpha()
 puud2=puud
 puude_positsioon=0
 
-väikebanaan=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
-väikebanaan_rect=väikebanaan.get_rect(midright=(100, 60))
 
+#puuviljad
 banaan=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
 banaan_rect=banaan.get_rect(midbottom=(1285, 345))
+banaanide_arv=0
 ananass=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-6.png.png').convert_alpha()
 ananass_rect=ananass.get_rect(midbottom=(2485,345))
+ananasside_arv=0
 maasikas=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-5.png.png').convert_alpha()
-maasikas_rect=maasikas.get_rect(midbottom=(3685, 345))
+maasikas_rect=maasikas.get_rect(midbottom=(6085, 345))#3685
+maasikate_arv=0
 sidrun=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-4.png.png').convert_alpha()
 sidrun_rect=sidrun.get_rect(midbottom=(4885, 345))
+sidrunite_arv=0
 apelsin=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-3.png.png').convert_alpha()
-apelsin_rect=apelsin.get_rect(midbottom=(6085, 345))
+apelsin_rect=apelsin.get_rect(midbottom=(3685, 345))#6085
+apelsinide_arv=0
 
+#pealkiri
 tekst=proovifont.render('Puuviljaseiklus', False, 'Black')
 tekst2=proovifont.render('Puuviljaseiklus', False, 'Brown')
 
+#skoor
 viljacounter=0
-puuvilju=proovifont.render(str(viljacounter)+'00', False, 'Brown')
-puuvilju_rect=puuvilju.get_rect(midleft=(100, 60))
-# puuvilju1=proovifont.render('100', False, 'Brown')
-# puuvilju2=proovifont.render('200', False, 'Brown')
-# puuvilju3=proovifont.render('300', False, 'Brown')
-# puuvilju4=proovifont.render('400', False, 'Brown')
-# puuvilju5=proovifont.render('500', False, 'Brown')
+def skoor(viljacounter):
+    puuvilju=proovifont.render(str(viljacounter)+'00', False, 'Brown')
+    puuvilju_rect=puuvilju.get_rect(midleft=(100, 60))
+    screen.blit(pygame.transform.scale(puuvilju, (50, 30)), (58,18))
 
+väikebanaan=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
+väikebanaan_rect=väikebanaan.get_rect(midright=(100, 60))
 
+#alused, saab ilma kordamata ka v?
 alus1=pygame.image.load('Desktop/Mänguprojekt/assets/alus1.png').convert_alpha()
 alus1_pos=35
 alus2=alus1
@@ -98,6 +106,9 @@ alus44_pos=1975
 alus55=alus1
 alus55_pos=2230
 
+#lõpuekraan
+lõpp=pygame.image.load('Desktop/Mänguprojekt/assets/lõpuke.png').convert_alpha()
+
 while True:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:#suudab quitida
@@ -107,10 +118,9 @@ while True:
             if event.type==pygame.KEYDOWN:#võimalik on teha üks hüpe ja double-jump aga kui tegelane on juba õhus kõrgel siis ei saa hüpata rohkem
                 if event.key==pygame.K_SPACE and plika_rect.top>=0:
                     plika_gravity=-15
-        # if event.type==pygame.MOUSEMOTION:
         if event.type==pygame.MOUSEBUTTONDOWN:
             if button2_rect.collidepoint(event.pos):
-                game_active=True
+                game_active=2
             if button1_rect.collidepoint(event.pos):
                 if tegelane=='tüdruk':
                     tegelane='poiss'
@@ -119,7 +129,7 @@ while True:
                     tegelane='tüdruk'
                     continue
 
-    if game_active==False:
+    if game_active==1:#alguse ekraan
         screen.blit(taust, (0,0))
         screen.blit(pygame.transform.scale(algus,(532, 600)), (330,0))
         screen.blit(pygame.transform.scale(button1, (150,64)), button1_rect)
@@ -129,7 +139,7 @@ while True:
         elif tegelane=='poiss':
             screen.blit(pygame.transform.scale(poiss, (90, 143)), (542, 300))
 
-    if game_active:
+    if game_active==2:#päris mäng
         #taust
         screen.blit(taust,(0,0))
         #puude osa:
@@ -139,10 +149,8 @@ while True:
         screen.blit(pygame.transform.scale(puud2, (1200,348)),(puude_positsioon+1200, 250))
         #tekstide osa:
         screen.blit(pygame.transform.scale(väikebanaan, (30,30)), väikebanaan_rect)
-        screen.blit(pygame.transform.scale(puuvilju, (50, 30)), (58,18))
-
-        screen.blit(tekst, (450, 50))
-        screen.blit(tekst2, (453,50))
+        screen.blit(tekst, (450, 50))#pealkiri
+        screen.blit(tekst2, (453,50))#vari
         #puuviljad
         screen.blit(pygame.transform.scale(banaan, (80, 91)), banaan_rect)
         banaan_rect.x-=2
@@ -154,7 +162,30 @@ while True:
         maasikas_rect.x-=2
         screen.blit(pygame.transform.scale(sidrun, (74, 86)), sidrun_rect)
         sidrun_rect.x-=2
-        #alused
+
+        #SKOOR
+        if plika_rect.colliderect(banaan_rect) and banaanide_arv==0:
+            banaanide_arv+=1
+            viljacounter+=1
+        if plika_rect.colliderect(ananass_rect) and ananasside_arv==0:
+            ananasside_arv+=1
+            viljacounter+=1
+        if plika_rect.colliderect(maasikas_rect) and maasikate_arv==0:
+            maasikate_arv+=1
+            viljacounter+=1
+        if plika_rect.colliderect(sidrun_rect) and sidrunite_arv==0:
+            sidrunite_arv+=1
+            viljacounter+=1
+        if plika_rect.colliderect(apelsin_rect) and apelsinide_arv==0:
+            apelsinide_arv+=1
+            viljacounter+=1
+        skoor(viljacounter)
+
+        if viljacounter==5:#kui kõik koos, on mäng läbi
+            time.sleep(0.2)
+            game_active=3
+
+        #alused, KAS SEE PeAB NII PIKK OLEMA?
         screen.blit(pygame.transform.scale(alus1, (100, 25)), (alus1_pos, 350))
         screen.blit(pygame.transform.scale(alus2, (100, 25)), (alus2_pos, 350))
         screen.blit(pygame.transform.scale(alus3, (100, 25)), (alus3_pos, 325))
@@ -194,6 +225,11 @@ while True:
         if plika_rect.bottom>=300:
             plika_rect.bottom=300
         screen.blit(plika, plika_rect)
+
+    if game_active==3:#lõpuekraan
+        screen.blit(taust, (0,0))
+        screen.blit(pygame.transform.scale(lõpp,(532, 600)), (330,0))
+
 
 
     pygame.display.update()
