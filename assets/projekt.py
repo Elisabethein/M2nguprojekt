@@ -3,10 +3,11 @@ from sys import exit
 import time
 pygame.init()
 
-# pikenda mängu natuke peale viimase puuvilja kogumist, siis end screen 
+# teha : pikenda mängu natuke peale viimase puuvilja kogumist, siis end screen 
+#        pane hüppama plankude peal ja game over screen
+
 
 # suurused
-
 fps = 90
 WIDTH, HEIGHT = 1200,600        # gamewindow suurus
 c_width, c_height = 250, 300    # poisi tegelaskuju suurus
@@ -15,36 +16,21 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Puuviljamäng')
 clock = pygame.time.Clock()
 
-
-#struktuur?:
-#while True loop
-    #game_active on false ja seal on see algus, niikaua kui pole start vajutatud, on see screen
-    #game_active on True kui vajutad start
-        #kui saad puuviljad kätte, see loop lõppeb ja tuleb lõpu ekraan
-        #lõpu screen, palju õnne juhuuu
-
-
 # assetid
 proovifont=pygame.font.Font("assets/alagard.ttf", 50)
 
 # algusekraanil
-algus=pygame.image.load('assets/final-scroll-ver2.png').convert_alpha()#scroll
-button1=pygame.image.load('assets/character-nupp.png').convert_alpha()#character nupp
+algus=pygame.image.load('assets/final-scroll-ver2.png').convert_alpha() #scroll
+button1=pygame.image.load('assets/character-nupp.png').convert_alpha()  #character nupp
 button1_rect=button1.get_rect(topleft=(440, 450))
-button2=pygame.image.load('assets/start-nupp.png').convert_alpha()#stardi nupp
+button2=pygame.image.load('assets/start-nupp.png').convert_alpha()      #stardi nupp
 button2_rect=button2.get_rect(topleft=(600,450))
-game_active=1#märgib seda et alguses oleks üks ekraan
+game_active=1                                    #märgib seda et alguses oleks üks ekraan
 
-        
-# def player_animation():
-#     global plika, player_index
-#     if plika_rect.bottom<300:
-#         plika=player3
-#     else:
 
 taust=pygame.image.load('assets/manutaust-1.png.png').convert()
 
-tegelane='tüdruk' # character screen 
+tegelane='tüdruk' # character screeni jaoks
 player1=pygame.image.load('assets/piksliplika/plika1.png').convert_alpha()
 player2=pygame.image.load('assets/piksliplika/plika2.png').convert_alpha()
 player3=pygame.image.load('assets/piksliplika/plika3.png').convert_alpha()
@@ -134,9 +120,10 @@ lõpp=pygame.image.load('assets/lõpuke.png').convert_alpha()
 
 while True:
     for event in pygame.event.get():
-        if event.type==pygame.QUIT:#suudab quitida
+        if event.type==pygame.QUIT:     # mäng kinni
             pygame.quit()
             exit()
+            
         if game_active:
             if event.type==pygame.KEYDOWN:#võimalik on teha üks hüpe ja double-jump aga kui tegelane on juba õhus kõrgel siis ei saa hüpata rohkem
                 if event.key==pygame.K_SPACE and plika_rect.top>=0:
