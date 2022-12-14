@@ -3,22 +3,29 @@ from sys import exit
 import time
 pygame.init()
 
-# teha : pikenda mängu natuke peale viimase puuvilja kogumist, siis end screen 
-#        pane hüppama plankude peal ja game over screen
-
-# muutsin puude tausta nime
 
 # suurused
 fps = 90
 WIDTH, HEIGHT = 1200,600        # gamewindow suurus
-c_width, c_height = 150, 250    # poisi tegelaskuju suurus
-walkCount = 0
+c_width, c_height = 50, 75    # poisi tegelaskuju suurus
+
+# algväärtused
+kõnd = 0
+tegelane='tüdruk'   # character screeni jaoks
+player='tüdruk'     # player
+plika_gravity=0
+p_gravity=0
+
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Puuviljamäng')
 clock = pygame.time.Clock()
 
-# assetid
+
+
+###########################################                 ASSETID                   ###################################################
+
+
 proovifont=pygame.font.Font("assets/alagard.ttf", 50)
 
 # algusekraanil
@@ -27,52 +34,40 @@ button1=pygame.image.load('assets/character-nupp.png').convert_alpha()  #charact
 button1_rect=button1.get_rect(topleft=(440, 450))
 button2=pygame.image.load('assets/start-nupp.png').convert_alpha()      #stardi nupp
 button2_rect=button2.get_rect(topleft=(600,450))
-game_active=1                                    #märgib seda et alguses oleks üks ekraan
+game_active=1                                                           #märgib seda et alguses oleks üks ekraan
 
+# herilased
+wasp = pygame.transform.scale(pygame.image.load('wasp.png'),(80,120)).convert_alpha()
+wasp_rect=wasp.get_rect(midbottom=(230,150))
+wasp2,wasp3,wasp4 = wasp,wasp,wasp
+wasp2_rect=wasp.get_rect(topleft=(2485,345))
+wasp3_rect=wasp.get_rect(topleft=(4000,100))
+wasp4_rect=wasp.get_rect(topleft=(5060,200))
+l = [wasp_rect,wasp2_rect,wasp3_rect,wasp4_rect]
 
-wasp = pygame.transform.scale(pygame.image.load('wasp.png'),(100,150)).convert_alpha()
-wasp_rect=wasp.get_rect(topleft=(600, 200))
-
-taust=pygame.image.load('assets/manutaust-1.png.png').convert()
-
-tegelane='tüdruk' # character screeni jaoks
-player1=pygame.image.load('assets/piksliplika/plika1.png').convert_alpha()
-player2=pygame.image.load('assets/piksliplika/plika2.png').convert_alpha()
-player3=pygame.image.load('assets/piksliplika/plika3.png').convert_alpha()
-player4=pygame.image.load('assets/piksliplika/plika4.png').convert_alpha()
-
-# animatsioon 
-player_kõnd=[player1, player2]
-player_index=0
-plika=player_kõnd[player_index] #100x141 reso vist, ja tundub parim
-plika_rect=plika.get_rect(midbottom=(50, 350))
-plika_gravity=0
-
-
-p_gravity=0
-
-tegelane='tüdruk'
+# tegelased
+plika=pygame.image.load('assets/piksliplika/plika1.png').convert_alpha()
 t1=pygame.image.load('assets/piksliplika/plika1.png').convert_alpha()
 t2=pygame.image.load('assets/piksliplika/plika2.png').convert_alpha()
 t3=pygame.image.load('assets/piksliplika/plika3.png').convert_alpha()
 t4=pygame.image.load('assets/piksliplika/plika4.png').convert_alpha()
 
 tWalkRight=[t1,t1,t1,t3,t3,t3,t2,t2,t2]
-tWalkLeft= [t1,t1,t1,t3,t3,t3,t2,t2,t2]
+plika_rect=plika.get_rect(midbottom=(50, 800))
 
-# boy asstets, kas panen .convert_alpha() lõppu?
+# boy asstets, .convert_alpha() lõppu
 poiss=pygame.image.load('assets/p-seisab.png')
 p1 = pygame.transform.scale(pygame.image.load('assets/p-k6nnib1.png'), (c_width,c_height))
 p2 = pygame.transform.scale(pygame.image.load('assets/p-k6nnib2&hyppab.png'), (c_width,c_height))
 p3= pygame.transform.scale(pygame.image.load('assets/p-k6nnib3.png'), (c_width,c_height))
 p4= pygame.transform.scale(pygame.image.load('assets/p-k6nnib4.png'), (c_width,c_height))
-# poisi animatsiooni list
+
 walkRight = [p1,p2,p3,p4,p1,p2,p3,p4,p1]
-walkLeft = [p1,p2,p3,p4,p1,p2,p3,p4,p1] # walkleft vajab flippimist!
-p_rect=poiss.get_rect(topleft=(100, 350))
+p_rect=poiss.get_rect(midbottom=(50, 350))
 
 #puude taust
-puud=pygame.image.load('puud.png').convert_alpha()
+taust=pygame.image.load('assets/manutaust-1.png.png').convert()
+puud=pygame.image.load('puud2.png').convert_alpha()
 puud2=puud
 puude_positsioon=0
 
@@ -94,8 +89,23 @@ apelsin_rect=apelsin.get_rect(midbottom=(3685, 345))#6085
 apelsinide_arv=0 # võtab ainult ühe korra skoori
 
 #pealkiri
-tekst=proovifont.render('Puuviljaseiklus', False, 'Black') # teksti vari
+tekst=proovifont.render('Puuviljaseiklus', False, 'Black')  # teksti vari
 tekst2=proovifont.render('Puuviljaseiklus', False, 'Brown') # tekst
+tekst3=proovifont.render('GAME OVER', False, 'Brown')       # game over tekst
+
+# skoori jaoks
+väikebanaan=pygame.image.load('assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
+väikebanaan_rect=väikebanaan.get_rect(midright=(100, 60))
+
+#lõpuekraan
+lõpp=pygame.image.load('assets/outro.png').convert_alpha() # võit
+gameover = pygame.image.load('game-over.jpg').convert_alpha() # kaotus
+
+
+
+#############################                ASSETID                 ###################################################
+
+
 
 #skoor
 viljacounter=0
@@ -104,36 +114,7 @@ def skoor(viljacounter):
     puuvilju_rect=puuvilju.get_rect(midleft=(100, 60))
     screen.blit(pygame.transform.scale(puuvilju, (50, 30)), (58,18))
 
-väikebanaan=pygame.image.load('assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
-väikebanaan_rect=väikebanaan.get_rect(midright=(100, 60))
-
-#alused, saab ilma kordamata ka v?
-alus1=pygame.image.load('assets/alus1.png').convert_alpha()
-alus1_pos=35
-alus2=alus1
-alus2_pos=220
-alus3=alus1
-alus3_pos=440
-alus4=alus1
-alus4_pos=775
-alus5=alus1
-alus5_pos=1030
-
-alus11=alus1
-alus11_pos=1235
-alus22=alus1
-alus22_pos=1420
-alus33=alus1
-alus33_pos=1640
-alus44=alus1
-alus44_pos=1975
-alus55=alus1
-alus55_pos=2230
-
-#lõpuekraan
-lõpp=pygame.image.load('assets/lõpuke.png').convert_alpha()
-gameover = pygame.image.load('game-over.jpg').convert_alpha()
-
+# main
 while True:
     for event in pygame.event.get():
         if event.type==pygame.QUIT:     # mäng kinni
@@ -141,21 +122,22 @@ while True:
             exit()
             
         if game_active:
-            if event.type==pygame.KEYDOWN:#võimalik on teha üks hüpe ja double-jump aga kui tegelane on juba õhus kõrgel siis ei saa hüpata rohkem
+            if event.type==pygame.KEYDOWN: # võimalik on teha üks hüpe ja double-jump aga kui tegelane on juba õhus kõrgel siis ei saa hüpata rohkem
                 if event.key==pygame.K_SPACE and plika_rect.top>=0:
-                    plika_gravity=-12
-        
-        walkCount += 1
+                    plika_gravity=-20
+                    p_gravity= -20
 
-        if event.type==pygame.MOUSEBUTTONDOWN:
+        if event.type==pygame.MOUSEBUTTONDOWN: # chrcter select tegelasevahetus 
             if button2_rect.collidepoint(event.pos):
                 game_active=2
             if button1_rect.collidepoint(event.pos):
                 if tegelane=='tüdruk':
                     tegelane='poiss'
+                    player = 'tüdruk'
                     continue
                 elif tegelane=='poiss':
                     tegelane='tüdruk'
+                    player = 'poiss'
                     continue
 
     if game_active==1: # alguse ekraan
@@ -171,33 +153,44 @@ while True:
     if game_active==2: # päris mäng
         #taust
         screen.blit(taust,(0,0))
+        kõnd += 1
         #puude osa:
-        puude_positsioon-=2
+        puude_positsioon-=4
         if puude_positsioon<-1200: puude_positsioon=0
         screen.blit(pygame.transform.scale(puud, (1200,348)), (puude_positsioon,250))
         screen.blit(pygame.transform.scale(puud2, (1200,348)),(puude_positsioon+1200, 250))
-        #tekstide osa:
+        # skoor
         screen.blit(pygame.transform.scale(väikebanaan, (30,30)), väikebanaan_rect)
         screen.blit(tekst, (450, 50))#pealkiri
         screen.blit(tekst2, (453,50))#vari
+
         #puuviljad
         screen.blit(pygame.transform.scale(banaan, (80, 91)), banaan_rect)
-        banaan_rect.x-=2
+        banaan_rect.x-=4
         screen.blit(pygame.transform.scale(ananass, (76, 100)), ananass_rect)
-        ananass_rect.x-=2
+        ananass_rect.x-=4
         screen.blit(pygame.transform.scale(apelsin, (80, 80)), apelsin_rect)
-        apelsin_rect.x-=2
+        apelsin_rect.x-=4
         screen.blit(pygame.transform.scale(maasikas, (80, 98)), maasikas_rect)
-        maasikas_rect.x-=2
+        maasikas_rect.x-=4
         screen.blit(pygame.transform.scale(sidrun, (74, 86)), sidrun_rect)
-        sidrun_rect.x-=2
+        sidrun_rect.x-=4
         
         # herilased
-        screen.blit(pygame.transform.scale(wasp, (74, 86)), wasp_rect)
-        wasp_rect.x-=2
+        screen.blit(wasp, wasp_rect)
+        wasp_rect.x-=4
+        screen.blit(wasp2,  wasp2_rect)
+        wasp2_rect.x-=4
+        screen.blit(wasp3, wasp3_rect)
+        wasp3_rect.x-=4
+        screen.blit(wasp4, wasp4_rect)
+        wasp4_rect.x-=4
 
-        #SKOOR
-        if tegelane == 'tüdruk':
+
+
+        # COLLISION JA SKOOR
+
+        if player == 'tüdruk':
             if plika_rect.colliderect(banaan_rect) and banaanide_arv==0:
                 banaanide_arv+=1
                 viljacounter+=1
@@ -214,7 +207,13 @@ while True:
                 apelsinide_arv+=1
                 viljacounter+=1
             skoor(viljacounter)
-        elif tegelane == poiss:
+
+            for herilane in l:
+                    if plika_rect.colliderect(herilane):
+                        print('kokkupõrge herilasega')
+                        game_active=4
+            
+        elif player == 'poiss':
             if p_rect.colliderect(banaan_rect) and banaanide_arv==0:
                 banaanide_arv+=1
                 viljacounter+=1
@@ -232,40 +231,37 @@ while True:
                 viljacounter+=1
             skoor(viljacounter)
 
+            for herilane in l:
+                if p_rect.colliderect(herilane):
+                    print('kokkupõrge herilasega')
+                    game_active=4
 
-        if viljacounter==5:#kui kõik koos, on mäng läbi
+
+        if viljacounter==5: # kui kõik koos, on mäng läbi
             time.sleep(0.2)
             game_active=3
 
         # collision herilasega
 
-        if p_rect.colliderect(wasp_rect):
-            print('collision')
-            game_active=4
-        elif plika_rect.colliderect(wasp_rect):
-            print('collision')
-            game_active=4
+        if kõnd +1>=12:
+            kõnd = 0
 
-        if walkCount +1>=12:
-            walkCount = 0
+        # tegelase animatsioon
 
-        #tegelane
-        # player_animation()
-        if tegelane ==  'tüdruk':
+        if player ==  'tüdruk':
             plika_gravity+=0.5
             plika_rect.y+=plika_gravity
             if plika_rect.bottom>=300:
                 plika_rect.bottom=300
-            screen.blit(tWalkRight[walkCount//3], plika_rect)
-        if tegelane == 'poiss':
+            screen.blit(tWalkRight[kõnd//3], plika_rect)
+        if player == 'poiss':
             p_gravity+=0.5
             p_rect.y+=p_gravity
             if p_rect.bottom>=300:
                 p_rect.bottom=300
-            screen.blit(walkRight[walkCount//3], p_rect)
+            screen.blit(walkRight[kõnd//3], p_rect)
 
-
-    if game_active==3:#lõpuekraan
+    if game_active==3: # lõpuekraan
         time.sleep(1)
         screen.blit(taust, (0,0))
         screen.blit(pygame.transform.scale(lõpp,(532, 600)), (330,0))
@@ -276,5 +272,7 @@ while True:
 
 
 
+
+
     pygame.display.update()
-    clock.tick(fps)#mängukiirus
+    clock.tick(fps) # mängukiirus

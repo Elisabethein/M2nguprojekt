@@ -25,11 +25,13 @@ clock = pygame.time.Clock()
 # assetid
 
 tegelane='tüdruk'
-player1=pygame.image.load('assets/piksliplika/plika1.png').convert_alpha()
-player2=pygame.image.load('assets/piksliplika/plika2.png').convert_alpha()
-player3=pygame.image.load('assets/piksliplika/plika3.png').convert_alpha()
-player4=pygame.image.load('assets/piksliplika/plika4.png').convert_alpha()
-tWalkRight=[]
+t1=pygame.transform.scale(pygame.image.load('assets/piksliplika/plika1.png'), (c_width,c_height))
+t2=pygame.transform.scale(pygame.image.load('assets/piksliplika/plika2.png'), (c_width,c_height))
+t3=pygame.transform.scale(pygame.image.load('assets/piksliplika/plika3.png'), (c_width,c_height))
+t4=pygame.transform.scale(pygame.image.load('assets/piksliplika/plika4.png'), (c_width,c_height))
+tseisab=pygame.transform.scale(pygame.image.load('assets/piksliplika/plika1.png'), (c_width,c_height))
+tWalkRight=[t1,t1,t2,t2,t3,t3,t4,t4,t1]
+tWalkLeft=[t1,t2,t3,t4,t1,t2,t3,t4,t1]
 
 poiss=pygame.image.load('assets/p-seisab.png')
 p1 = pygame.transform.scale(pygame.image.load('assets/p-k6nnib1.png'), (c_width,c_height))
@@ -43,7 +45,7 @@ walkLeft = [p1,p2,p3,p4,p1,p2,p3,p4,p1]
 
 bg= pygame.transform.scale(pygame.image.load(os.path.join('taust.jpg')), (WIDTH, HEIGHT))
 seisab= pygame.transform.scale(pygame.image.load(os.path.join('p-seisab.png')), (c_width,c_height))
-puud=pygame.image.load('assets/puudkindel-1.png.png').convert_alpha()
+puud=pygame.image.load('puud.png').convert_alpha()
 
 banaan=pygame.image.load('assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
 banaan_rect=banaan.get_rect(midbottom=(1285, 345))
@@ -96,6 +98,7 @@ def redrawGameWindow():
 run = True
 while run:
     clock.tick(fps)
+    walkCount += 3
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -136,4 +139,5 @@ while run:
 
 pygame.quit()
     
+
 

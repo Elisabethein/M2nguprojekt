@@ -1,6 +1,12 @@
 import pygame
 pygame.init()
 
+
+JUMP_HEIGHT = 20
+Y_VELOCITY = JUMP_HEIGHT'
+isJump = False
+
+
 win = pygame.display.set_mode((1200, 600))
 
 clock = pygame.time.Clock()

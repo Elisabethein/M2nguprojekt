@@ -119,7 +119,7 @@ alus55=alus1
 alus55_pos=2230
 
 #lõpuekraan
-lõpp=pygame.image.load('assets/lõpuke.png').convert_alpha()
+lõpp=pygame.image.load('outro.png').convert_alpha()
 gameover = pygame.image.load('game-over.jpg').convert_alpha()
 
 while True:
