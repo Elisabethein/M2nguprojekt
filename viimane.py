@@ -26,7 +26,7 @@ clock = pygame.time.Clock()
 ###########################################                 ASSETID                   ###################################################
 
 
-proovifont=pygame.font.Font("assets/alagard.ttf", 50)
+proovifont=pygame.font.Font("assets/alagard.ttf", 50)                   # font
 
 # algusekraanil
 algus=pygame.image.load('assets/final-scroll-ver2.png').convert_alpha() #scroll
@@ -40,8 +40,8 @@ game_active=1                                                           #märgib
 wasp = pygame.transform.scale(pygame.image.load('wasp.png'),(80,120)).convert_alpha()
 wasp_rect=wasp.get_rect(midbottom=(230,150))
 wasp2,wasp3,wasp4 = wasp,wasp,wasp
-wasp2_rect=wasp.get_rect(topleft=(2485,345))
-wasp3_rect=wasp.get_rect(topleft=(4000,100))
+wasp2_rect=wasp.get_rect(topleft=(2485,200))
+wasp3_rect=wasp.get_rect(topleft=(4000,300))
 wasp4_rect=wasp.get_rect(topleft=(5060,200))
 l = [wasp_rect,wasp2_rect,wasp3_rect,wasp4_rect]
 
@@ -53,7 +53,7 @@ t3=pygame.image.load('assets/piksliplika/plika3.png').convert_alpha()
 t4=pygame.image.load('assets/piksliplika/plika4.png').convert_alpha()
 
 tWalkRight=[t1,t1,t1,t3,t3,t3,t2,t2,t2]
-plika_rect=plika.get_rect(midbottom=(50, 800))
+plika_rect=plika.get_rect(midbottom=(50, 990))
 
 # boy asstets, .convert_alpha() lõppu
 poiss=pygame.image.load('assets/p-seisab.png')
@@ -63,7 +63,7 @@ p3= pygame.transform.scale(pygame.image.load('assets/p-k6nnib3.png'), (c_width,c
 p4= pygame.transform.scale(pygame.image.load('assets/p-k6nnib4.png'), (c_width,c_height))
 
 walkRight = [p1,p2,p3,p4,p1,p2,p3,p4,p1]
-p_rect=poiss.get_rect(midbottom=(50, 350))
+p_rect=poiss.get_rect(midbottom=(50, 0))
 
 #puude taust
 taust=pygame.image.load('assets/manutaust-1.png.png').convert()
@@ -103,7 +103,7 @@ gameover = pygame.image.load('game-over.jpg').convert_alpha() # kaotus
 
 
 
-#############################                ASSETID                 ###################################################
+###################################                ASSETID                 ###################################################
 
 
 
