@@ -17,24 +17,24 @@ pygame.display.set_caption('Puuviljamäng')
 clock = pygame.time.Clock()
 
 # assetid
-proovifont=pygame.font.Font("assets/alagard.ttf", 50)
+proovifont=pygame.font.Font("Desktop/Mänguprojekt/assets/alagard.ttf", 50)
 
 # algusekraanil
-algus=pygame.image.load('assets/final-scroll-ver2.png').convert_alpha() #scroll
-button1=pygame.image.load('assets/character-nupp.png').convert_alpha()  #character nupp
+algus=pygame.image.load('Desktop/Mänguprojekt/assets/final-scroll-ver2.png').convert_alpha() #scroll
+button1=pygame.image.load('Desktop/Mänguprojekt/assets/character-nupp.png').convert_alpha()  #character nupp
 button1_rect=button1.get_rect(topleft=(440, 450))
-button2=pygame.image.load('assets/start-nupp.png').convert_alpha()      #stardi nupp
+button2=pygame.image.load('Desktop/Mänguprojekt/assets/start-nupp.png').convert_alpha()      #stardi nupp
 button2_rect=button2.get_rect(topleft=(600,450))
 game_active=1                                    #märgib seda et alguses oleks üks ekraan
 
 
-taust=pygame.image.load('assets/manutaust-1.png.png').convert()
+taust=pygame.image.load('Desktop/Mänguprojekt/assets/manutaust-1.png.png').convert()
 
 tegelane='tüdruk' # character screeni jaoks
-player1=pygame.image.load('assets/piksliplika/plika1.png').convert_alpha()
-player2=pygame.image.load('assets/piksliplika/plika2.png').convert_alpha()
-player3=pygame.image.load('assets/piksliplika/plika3.png').convert_alpha()
-player4=pygame.image.load('assets/piksliplika/plika4.png').convert_alpha()
+player1=pygame.image.load('Desktop/Mänguprojekt/assets/piksliplika/plika1.png').convert_alpha()
+player2=pygame.image.load('Desktop/Mänguprojekt/assets/piksliplika/plika2.png').convert_alpha()
+player3=pygame.image.load('Desktop/Mänguprojekt/assets/piksliplika/plika3.png').convert_alpha()
+player4=pygame.image.load('Desktop/Mänguprojekt/assets/piksliplika/plika4.png').convert_alpha()
 
 # animatsioon 
 player_kõnd=[player1, player2]
@@ -47,34 +47,34 @@ tWalkLeft = []
 tWalkRight = []
 
 # boy asstets, kas panen .convert_alpha() lõppu?
-poiss=pygame.image.load('assets/p-seisab.png')
-p1 = pygame.transform.scale(pygame.image.load('assets/p-k6nnib1.png'), (c_width,c_height))
-p2 = pygame.transform.scale(pygame.image.load('assets/p-k6nnib2&hyppab.png'), (c_width,c_height))
-p3= pygame.transform.scale(pygame.image.load('assets/p-k6nnib3.png'), (c_width,c_height))
-p4= pygame.transform.scale(pygame.image.load('assets/p-k6nnib4.png'), (c_width,c_height))
+poiss=pygame.image.load('Desktop/Mänguprojekt/assets/p-seisab.png')
+p1 = pygame.transform.scale(pygame.image.load('Desktop/Mänguprojekt/assets/p-k6nnib1.png'), (c_width,c_height))
+p2 = pygame.transform.scale(pygame.image.load('Desktop/Mänguprojekt/assets/p-k6nnib2&hyppab.png'), (c_width,c_height))
+p3= pygame.transform.scale(pygame.image.load('Desktop/Mänguprojekt/assets/p-k6nnib3.png'), (c_width,c_height))
+p4= pygame.transform.scale(pygame.image.load('Desktop/Mänguprojekt/assets/p-k6nnib4.png'), (c_width,c_height))
 # poisi animatsiooni list
 walkRight = [p1,p2,p3,p4,p1,p2,p3,p4,p1]
 walkLeft = [p1,p2,p3,p4,p1,p2,p3,p4,p1] # walkleft vajab flippimist!
 
 #puude taust
-puud=pygame.image.load('assets/puudkindel-1.png.png').convert_alpha()
+puud=pygame.image.load('Desktop/Mänguprojekt/assets/puudkindel-1.png.png').convert_alpha()
 puud2=puud
 puude_positsioon=0
 
 #puuviljad
-banaan=pygame.image.load('assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
+banaan=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
 banaan_rect=banaan.get_rect(midbottom=(1285, 345))
 banaanide_arv=0
-ananass=pygame.image.load('assets/pikslipuuviljad/puuviljad-6.png.png').convert_alpha()
+ananass=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-6.png.png').convert_alpha()
 ananass_rect=ananass.get_rect(midbottom=(2485,345))
 ananasside_arv=0
-maasikas=pygame.image.load('assets/pikslipuuviljad/puuviljad-5.png.png').convert_alpha()
+maasikas=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-5.png.png').convert_alpha()
 maasikas_rect=maasikas.get_rect(midbottom=(6085, 345))#3685
 maasikate_arv=0
-sidrun=pygame.image.load('assets/pikslipuuviljad/puuviljad-4.png.png').convert_alpha()
+sidrun=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-4.png.png').convert_alpha()
 sidrun_rect=sidrun.get_rect(midbottom=(4885, 345))
 sidrunite_arv=0
-apelsin=pygame.image.load('assets/pikslipuuviljad/puuviljad-3.png.png').convert_alpha()
+apelsin=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-3.png.png').convert_alpha()
 apelsin_rect=apelsin.get_rect(midbottom=(3685, 345))#6085
 apelsinide_arv=0 # võtab ainult ühe korra skoori
 
@@ -89,11 +89,11 @@ def skoor(viljacounter):
     puuvilju_rect=puuvilju.get_rect(midleft=(100, 60))
     screen.blit(pygame.transform.scale(puuvilju, (50, 30)), (58,18))
 
-väikebanaan=pygame.image.load('assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
+väikebanaan=pygame.image.load('Desktop/Mänguprojekt/assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
 väikebanaan_rect=väikebanaan.get_rect(midright=(100, 60))
 
 #alused, saab ilma kordamata ka v?
-alus1=pygame.image.load('assets/alus1.png').convert_alpha()
+alus1=pygame.image.load('Desktop/Mänguprojekt/assets/alus1.png').convert_alpha()
 alus1_pos=35
 alus2=alus1
 alus2_pos=220
@@ -116,7 +116,7 @@ alus55=alus1
 alus55_pos=2230
 
 #lõpuekraan
-lõpp=pygame.image.load('assets/lõpuke.png').convert_alpha()
+lõpp=pygame.image.load('Desktop/Mänguprojekt/assets/lõpuke.png').convert_alpha()
 
 while True:
     for event in pygame.event.get():
