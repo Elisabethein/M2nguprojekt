@@ -11,13 +11,12 @@ pygame.init()
 # suurused
 fps = 90
 WIDTH, HEIGHT = 1200,600        # gamewindow suurus
-c_width, c_height = 250, 300    # poisi tegelaskuju suurus
+c_width, c_height = 150, 250    # poisi tegelaskuju suurus
+walkCount = 0
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Puuviljamäng')
 clock = pygame.time.Clock()
-
-wasp = pygame.image.load('assets/character-nupp.png').convert_alpha()
 
 # assetid
 proovifont=pygame.font.Font("assets/alagard.ttf", 50)
@@ -31,6 +30,9 @@ button2_rect=button2.get_rect(topleft=(600,450))
 game_active=1                                    #märgib seda et alguses oleks üks ekraan
 
 
+wasp = pygame.transform.scale(pygame.image.load('wasp.png'),(100,150)).convert_alpha()
+wasp_rect=wasp.get_rect(topleft=(600, 200))
+
 taust=pygame.image.load('assets/manutaust-1.png.png').convert()
 
 tegelane='tüdruk' # character screeni jaoks
@@ -43,11 +45,20 @@ player4=pygame.image.load('assets/piksliplika/plika4.png').convert_alpha()
 player_kõnd=[player1, player2]
 player_index=0
 plika=player_kõnd[player_index] #100x141 reso vist, ja tundub parim
-plika_rect=plika.get_rect(midbottom=(50, 300))
+plika_rect=plika.get_rect(midbottom=(50, 350))
 plika_gravity=0
 
-tWalkLeft = []
-tWalkRight = []
+
+p_gravity=0
+
+tegelane='tüdruk'
+t1=pygame.image.load('assets/piksliplika/plika1.png').convert_alpha()
+t2=pygame.image.load('assets/piksliplika/plika2.png').convert_alpha()
+t3=pygame.image.load('assets/piksliplika/plika3.png').convert_alpha()
+t4=pygame.image.load('assets/piksliplika/plika4.png').convert_alpha()
+
+tWalkRight=[t1,t1,t1,t3,t3,t3,t2,t2,t2]
+tWalkLeft= [t1,t1,t1,t3,t3,t3,t2,t2,t2]
 
 # boy asstets, kas panen .convert_alpha() lõppu?
 poiss=pygame.image.load('assets/p-seisab.png')
@@ -58,6 +69,7 @@ p4= pygame.transform.scale(pygame.image.load('assets/p-k6nnib4.png'), (c_width,c
 # poisi animatsiooni list
 walkRight = [p1,p2,p3,p4,p1,p2,p3,p4,p1]
 walkLeft = [p1,p2,p3,p4,p1,p2,p3,p4,p1] # walkleft vajab flippimist!
+p_rect=poiss.get_rect(topleft=(100, 350))
 
 #puude taust
 puud=pygame.image.load('puud.png').convert_alpha()
@@ -132,6 +144,8 @@ while True:
             if event.type==pygame.KEYDOWN:#võimalik on teha üks hüpe ja double-jump aga kui tegelane on juba õhus kõrgel siis ei saa hüpata rohkem
                 if event.key==pygame.K_SPACE and plika_rect.top>=0:
                     plika_gravity=-12
+        
+        walkCount += 1
 
         if event.type==pygame.MOUSEBUTTONDOWN:
             if button2_rect.collidepoint(event.pos):
@@ -177,76 +191,88 @@ while True:
         maasikas_rect.x-=2
         screen.blit(pygame.transform.scale(sidrun, (74, 86)), sidrun_rect)
         sidrun_rect.x-=2
+        
+        # herilased
+        screen.blit(pygame.transform.scale(wasp, (74, 86)), wasp_rect)
+        wasp_rect.x-=2
 
         #SKOOR
-        if plika_rect.colliderect(banaan_rect) and banaanide_arv==0:
-            banaanide_arv+=1
-            viljacounter+=1
-        if plika_rect.colliderect(ananass_rect) and ananasside_arv==0:
-            ananasside_arv+=1
-            viljacounter+=1
-        if plika_rect.colliderect(maasikas_rect) and maasikate_arv==0:
-            maasikate_arv+=1
-            viljacounter+=1
-        if plika_rect.colliderect(sidrun_rect) and sidrunite_arv==0:
-            sidrunite_arv+=1
-            viljacounter+=1
-        if plika_rect.colliderect(apelsin_rect) and apelsinide_arv==0:
-            apelsinide_arv+=1
-            viljacounter+=1
-        skoor(viljacounter)
+        if tegelane == 'tüdruk':
+            if plika_rect.colliderect(banaan_rect) and banaanide_arv==0:
+                banaanide_arv+=1
+                viljacounter+=1
+            if plika_rect.colliderect(ananass_rect) and ananasside_arv==0:
+                ananasside_arv+=1
+                viljacounter+=1
+            if plika_rect.colliderect(maasikas_rect) and maasikate_arv==0:
+                maasikate_arv+=1
+                viljacounter+=1
+            if plika_rect.colliderect(sidrun_rect) and sidrunite_arv==0:
+                sidrunite_arv+=1
+                viljacounter+=1
+            if plika_rect.colliderect(apelsin_rect) and apelsinide_arv==0:
+                apelsinide_arv+=1
+                viljacounter+=1
+            skoor(viljacounter)
+        elif tegelane == poiss:
+            if p_rect.colliderect(banaan_rect) and banaanide_arv==0:
+                banaanide_arv+=1
+                viljacounter+=1
+            if p_rect.colliderect(ananass_rect) and ananasside_arv==0:
+                ananasside_arv+=1
+                viljacounter+=1
+            if p_rect.colliderect(maasikas_rect) and maasikate_arv==0:
+                maasikate_arv+=1
+                viljacounter+=1
+            if p_rect.colliderect(sidrun_rect) and sidrunite_arv==0:
+                sidrunite_arv+=1
+                viljacounter+=1
+            if p_rect.colliderect(apelsin_rect) and apelsinide_arv==0:
+                apelsinide_arv+=1
+                viljacounter+=1
+            skoor(viljacounter)
+
 
         if viljacounter==5:#kui kõik koos, on mäng läbi
             time.sleep(0.2)
             game_active=3
 
-        #alused, KAS SEE PeAB NII PIKK OLEMA?
-        screen.blit(pygame.transform.scale(alus1, (100, 25)), (alus1_pos, 350))
-        screen.blit(pygame.transform.scale(alus2, (100, 25)), (alus2_pos, 350))
-        screen.blit(pygame.transform.scale(alus3, (100, 25)), (alus3_pos, 325))
-        screen.blit(pygame.transform.scale(alus4, (100, 25)), (alus4_pos, 300))
-        screen.blit(pygame.transform.scale(alus5, (100, 25)), (alus5_pos, 300))
-        screen.blit(pygame.transform.scale(alus11, (100, 25)), (alus11_pos, 350))
-        screen.blit(pygame.transform.scale(alus22, (100, 25)), (alus22_pos, 350))
-        screen.blit(pygame.transform.scale(alus33, (100, 25)), (alus33_pos, 325))
-        screen.blit(pygame.transform.scale(alus44, (100, 25)), (alus44_pos, 300))
-        screen.blit(pygame.transform.scale(alus55, (100, 25)), (alus55_pos, 300))
-        alus1_pos-=2
-        if alus1_pos<-1165: alus1_pos=1235
-        alus2_pos-=2
-        if alus2_pos<-980: alus2_pos=1420
-        alus3_pos-=2
-        if alus3_pos<-760: alus3_pos=1640
-        alus4_pos-=2
-        if alus4_pos<-425: alus4_pos=1975
-        alus5_pos-=2
-        if alus5_pos<-170: alus5_pos=2230
-        alus11_pos-=2
-        if alus11_pos<-1165: alus11_pos=1235
-        alus22_pos-=2
-        if alus22_pos<-980: alus22_pos=1420
-        alus33_pos-=2
-        if alus33_pos<-760: alus33_pos=1640
-        alus44_pos-=2
-        if alus44_pos<-425: alus44_pos=1975
-        alus55_pos-=2
-        if alus55_pos<-170: alus55_pos=2230
-        
+        # collision herilasega
+
+        if p_rect.colliderect(wasp_rect):
+            print('collision')
+            game_active=4
+        elif plika_rect.colliderect(wasp_rect):
+            print('collision')
+            game_active=4
+
+        if walkCount +1>=12:
+            walkCount = 0
+
         #tegelane
         # player_animation()
+        if tegelane ==  'tüdruk':
+            plika_gravity+=0.5
+            plika_rect.y+=plika_gravity
+            if plika_rect.bottom>=300:
+                plika_rect.bottom=300
+            screen.blit(tWalkRight[walkCount//3], plika_rect)
+        if tegelane == 'poiss':
+            p_gravity+=0.5
+            p_rect.y+=p_gravity
+            if p_rect.bottom>=300:
+                p_rect.bottom=300
+            screen.blit(walkRight[walkCount//3], p_rect)
 
-        plika_gravity+=0.5
-        plika_rect.y+=plika_gravity
-        if plika_rect.bottom>=300:
-            plika_rect.bottom=300
-        screen.blit(plika, plika_rect)
 
     if game_active==3:#lõpuekraan
+        time.sleep(1)
         screen.blit(taust, (0,0))
         screen.blit(pygame.transform.scale(lõpp,(532, 600)), (330,0))
 
     if game_active== 4: # game over screen
-        screen.blit(pygame.transform.scale(gameover,(WIDTH,HEIGHT)))
+        time.sleep(1)
+        screen.blit(pygame.transform.scale(gameover,(WIDTH,HEIGHT)),(0,0))
 
 
 

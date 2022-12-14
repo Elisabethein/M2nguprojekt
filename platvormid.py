@@ -7,9 +7,11 @@ pygame.init()
 fps = 27
 c_width, c_height = 250, 300
 WIDTH, HEIGHT = 1000,700
-x = 50
+x = 400
 y = 400
 vel = 10
+tausta_kiirus = 8
+herilase_kiirus = tausta_kiirus + 2
 
 isJump = False
 jumpCount = 10
@@ -23,8 +25,10 @@ clock = pygame.time.Clock()
 
 
 # assetid
+# kõigile võib .convert_alpha() taha panna
 
-tegelane='tüdruk'
+tegelane='poiss'
+
 t1=pygame.transform.scale(pygame.image.load('assets/piksliplika/plika1.png'), (c_width,c_height))
 t2=pygame.transform.scale(pygame.image.load('assets/piksliplika/plika2.png'), (c_width,c_height))
 t3=pygame.transform.scale(pygame.image.load('assets/piksliplika/plika3.png'), (c_width,c_height))
@@ -32,6 +36,7 @@ t4=pygame.transform.scale(pygame.image.load('assets/piksliplika/plika4.png'), (c
 tseisab=pygame.transform.scale(pygame.image.load('assets/piksliplika/plika1.png'), (c_width,c_height))
 tWalkRight=[t1,t1,t2,t2,t3,t3,t4,t4,t1]
 tWalkLeft=[t1,t2,t3,t4,t1,t2,t3,t4,t1]
+t_rect=t1.get_rect(topleft=(x,y))
 
 poiss=pygame.image.load('assets/p-seisab.png')
 p1 = pygame.transform.scale(pygame.image.load('assets/p-k6nnib1.png'), (c_width,c_height))
@@ -41,12 +46,20 @@ p4= pygame.transform.scale(pygame.image.load('assets/p-k6nnib4.png'), (c_width,c
 # poisi animatsiooni list
 walkRight = [p1,p2,p3,p4,p1,p2,p3,p4,p1]
 walkLeft = [p1,p2,p3,p4,p1,p2,p3,p4,p1]
+p_rect=poiss.get_rect(topleft=(x,y))
 
-
+# taustal
 bg= pygame.transform.scale(pygame.image.load(os.path.join('taust.jpg')), (WIDTH, HEIGHT))
 seisab= pygame.transform.scale(pygame.image.load(os.path.join('p-seisab.png')), (c_width,c_height))
 puud=pygame.image.load('puud.png').convert_alpha()
+platvorm = pygame.image.load('assets/alus1.png').convert_alpha()
+#platvorm_x = 200
+px=400
+py=400
+rect_platvorm= platvorm.get_rect(topleft=(px,py))
+platvormid = [rect_platvorm]
 
+# viljad 
 banaan=pygame.image.load('assets/pikslipuuviljad/puuviljad-2.png.png').convert_alpha()
 banaan_rect=banaan.get_rect(midbottom=(1285, 345))
 banaanide_arv=0
@@ -62,36 +75,83 @@ sidrunite_arv=0
 apelsin=pygame.image.load('assets/pikslipuuviljad/puuviljad-3.png.png').convert_alpha()
 apelsin_rect=apelsin.get_rect(midbottom=(3685, 345))#6085
 apelsinide_arv=0
+viljad=[banaan,ananass,maasikas,sidrun,apelsin]
 
 # stardiekraan
 
 # algusekraan
 algus=pygame.image.load('assets/final-scroll-ver2.png').convert_alpha()#scroll
 button1=pygame.image.load('assets/character-nupp.png').convert_alpha()#character nupp
-button1_rect=button1.get_rect(topleft=(440, 450))
+button1_rect=button1.get_rect(midbottom=(440, 450))
 button2=pygame.image.load('assets/start-nupp.png').convert_alpha()#stardi nupp
-button2_rect=button2.get_rect(topleft=(600,450))
-game_active=1#märgib seda et alguses oleks üks ekraan
+button2_rect=button2.get_rect(midtop=(600,450))
+game_active=1 # märgib seda et alguses oleks üks ekraan
+
 
 # lõpuekraan
-lõpp=pygame.image.load('assets/lõpuke.png').convert_alpha()
+lõpp=pygame.image.load('assets/lõpuke.png').convert_alpha() # võit
+ # game over
+gameover = pygame.image.load('game-over.jpg').convert_alpha() # kaotus
+
+
+# kas on platvormil?
+
+def on_platform():
+    for plat in platvormid:
+        if p_rect.colliderect(plat):
+            return True
+        elif t_rect.colliderect(plat):
+            return True
+        else:
+            return False
 
 # mängu kood
 def redrawGameWindow():
     global walkCount
     win.blit(bg,(0,0)) #taust
+    win.blit(platvorm,rect_platvorm)
     
     if walkCount +1>=12:
         walkCount = 0
-    win.blit(walkRight[walkCount//3], (x,y))
-    walkCount += 1
+
+    if tegelane =='poiss':
+        if right:
+            win.blit(walkRight[walkCount//3], p_rect)
+            walkCount += 1
+        elif left:
+            win.blit(walkLeft[walkCount//3], p_rect)
+            walkCount += 1
+        else:
+            win.blit(seisab, p_rect)
+
+    elif tegelane =='tüdruk':
+        if right:
+            win.blit(tWalkRight[walkCount//3], t_rect)
+            walkCount += 1
+        elif left:
+            win.blit(tWalkLeft[walkCount//3], t_rect)
+            walkCount += 1
+        else:
+            win.blit(tseisab, t_rect)
+
+    pygame.display.update()
+
+
+# rect2.bottom = rect1.top
+# - pane tegelane alguses platvormile
 
 # main loop
 run = True
 while run:
     clock.tick(fps)
-    walkCount += 3
-    
+    rect_platvorm.x-=tausta_kiirus # platvorm liigub
+    p_rect.left += 1
+    #rect_platvorm.top=p_rect.bottom
+    #y2=p_rect.y
+
+    if rect_platvorm.right <= 0: rect_platvorm.left = WIDTH # pane asjad ekraanil loopima
+
+    # get system events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
@@ -127,6 +187,16 @@ while run:
             isJump = False
             jumpCount = 10
     
+    # get collision info
+    if not on_platform:
+        print('pole platvormil')
+    if on_platform:
+        print('on platormil')
+
+    if p_rect.colliderect(rect_platvorm):
+        print('collision')
+
+    # update velocity, position, draw the frame
     redrawGameWindow()
 
 pygame.quit()
