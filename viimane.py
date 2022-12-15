@@ -53,10 +53,12 @@ t1=pygame.image.load('assets/piksliplika/plika1.png').convert_alpha()
 t2=pygame.image.load('assets/piksliplika/plika2.png').convert_alpha()
 t3=pygame.image.load('assets/piksliplika/plika3.png').convert_alpha()
 t4=pygame.image.load('assets/piksliplika/plika4.png').convert_alpha()
-
+t_jump = t4
+t_walk = [t1,t3,t2]
+t=t_walk[kõnd]
 #tWalkRight=[t1,t1,t1,t1,t1,t1,t1,t1,t3,t3,t3,t3,t3,t3,t3,t3,t2,t2,t2,t2,t2,t2,t2,t2]
 tWalkRight=[t1,t2,t3,t4,t1,t2,t3,t4,t1,t2,t3,t4,t1]
-plika_rect=plika.get_rect(midbottom=(50, 350))
+plika_rect=t.get_rect(midbottom=(50, 350))
 
 # boy asstets, .convert_alpha() lõppu
 poiss=pygame.image.load('assets/p-seisab.png')
@@ -65,8 +67,11 @@ p2 = pygame.transform.scale(pygame.image.load('p-k6nnib2&hyppab.png'), (c_width,
 p3= pygame.transform.scale(pygame.image.load('p-k6nnib3.png'), (c_width,c_height)).convert_alpha()
 p4= pygame.transform.scale(pygame.image.load('p-k6nnib4.png'), (c_width,c_height)).convert_alpha()
 
+p_walk = [p1,p2,p3,p4]
+p_jump = p2
+p=p_walk[kõnd]
 walkRight = [p1,p2,p3,p4,p1,p2,p3,p4,p1,p2,p3,p4,p1]
-p_rect=p1.get_rect(midbottom=(50, 350))
+p_rect=p.get_rect(midbottom=(50, 350))
 
 #puude taust
 taust=pygame.image.load('assets/manutaust-1.png.png').convert()
@@ -112,17 +117,40 @@ gameover = pygame.image.load('game-over.jpg').convert_alpha() # kaotus
 
 
 
-#skoor
+# skoor
 viljacounter=0
 def skoor(viljacounter):
     puuvilju=proovifont.render(str(viljacounter)+'00', False, 'Brown')
     puuvilju_rect=puuvilju.get_rect(midleft=(100, 60))
     screen.blit(pygame.transform.scale(puuvilju, (50, 30)), (58,18))
 
+# animatsioon
+def animation(kumb):
+    global t, p, kõnd
+
+    if kumb == 'tüdruk':
+        print('tüdruk')
+        if plika_rect.bottom < 360:
+            t = t_jump 
+        else:
+            kõnd += 0.05
+            if kõnd >= len(t_walk):
+                kõnd=0
+            t = t_walk[int(kõnd)]
+        
+    if kumb == 'poiss':
+        print('poiss')
+        if p_rect.bottom < 360:
+            p = p_jump
+        else:
+            kõnd += 0.05
+            if kõnd >= len(p_walk):
+                kõnd=0
+            p = p_walk[int(kõnd)]
+
 
 # main
 while True:
-    kõnd=kõnd+1
     for event in pygame.event.get():
         if event.type==pygame.QUIT:     # mäng kinni
             pygame.quit()
@@ -265,24 +293,22 @@ while True:
 
         # tegelase animatsioon
 
-        if kõnd+1>=12:
-            kõnd= 0
-
         if player ==  'tüdruk':
             plika_gravity+=0.5
             plika_rect.y+=plika_gravity
             if plika_rect.bottom>=360:
                 plika_rect.bottom=360
-            screen.blit(tWalkRight[kõnd], plika_rect)
+            animation('tüdruk')
+            screen.blit(t, plika_rect)
         
         elif player == 'poiss':
             p_gravity+=0.5
             p_rect.y+=p_gravity
             if p_rect.bottom>=360:
                 p_rect.bottom=360
-            screen.blit(p1, p_rect)
+            animation('poiss')
+            screen.blit(p, p_rect)
 
-        kõnd=+1
 
     
     if game_active==3: # win screen 
