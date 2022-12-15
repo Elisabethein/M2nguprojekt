@@ -55,7 +55,8 @@ t2=pygame.image.load('assets/piksliplika/plika2.png').convert_alpha()
 t3=pygame.image.load('assets/piksliplika/plika3.png').convert_alpha()
 t4=pygame.image.load('assets/piksliplika/plika4.png').convert_alpha()
 
-tWalkRight=[t1,t1,t1,t1,t1,t1,t1,t1,t3,t3,t3,t3,t3,t3,t3,t3,t2,t2,t2,t2,t2,t2,t2,t2] 
+#tWalkRight=[t1,t1,t1,t1,t1,t1,t1,t1,t3,t3,t3,t3,t3,t3,t3,t3,t2,t2,t2,t2,t2,t2,t2,t2]
+tWalkRight=[t1,t2,t3,t4,t1,t2,t3,t4,t1,t2,t3,t4,t1]
 plika_rect=plika.get_rect(midbottom=(50, 350))
 
 # boy asstets, .convert_alpha() lõppu
@@ -65,7 +66,7 @@ p2 = pygame.transform.scale(pygame.image.load('p-k6nnib2&hyppab.png'), (c_width,
 p3= pygame.transform.scale(pygame.image.load('p-k6nnib3.png'), (c_width,c_height)).convert_alpha()
 p4= pygame.transform.scale(pygame.image.load('p-k6nnib4.png'), (c_width,c_height)).convert_alpha()
 
-walkRight = [p1,p2,p3,p4,p1,p2,p3,p4,p1]
+walkRight = [p1,p2,p3,p4,p1,p2,p3,p4,p1,p2,p3,p4,p1]
 p_rect=poiss.get_rect(midbottom=(50, 350))
 
 #puude taust
@@ -122,6 +123,7 @@ def skoor(viljacounter):
 
 # main
 while True:
+    kõnd=kõnd+1
     for event in pygame.event.get():
         if event.type==pygame.QUIT:     # mäng kinni
             pygame.quit()
@@ -130,9 +132,9 @@ while True:
         if game_active:
             if event.type==pygame.KEYDOWN: # võimalik on teha üks hüpe ja double-jump aga kui tegelane on juba õhus kõrgel siis ei saa hüpata rohkem
                 if event.key==pygame.K_SPACE and plika_rect.top>=0:
-                    plika_gravity=-15
+                    plika_gravity=-14
                 if event.key==pygame.K_SPACE and p_rect.top>=0:
-                    p_gravity= -15
+                    p_gravity= -14
 
         if event.type==pygame.MOUSEBUTTONDOWN: # chrcter select tegelasevahetus 
             if button2_rect.collidepoint(event.pos):
@@ -162,7 +164,6 @@ while True:
     if game_active==2: # päris mäng
         #taust
         screen.blit(taust,(0,0))
-        kõnd += 1
         #puude osa:
         puude_positsioon-=k
         if puude_positsioon<-1200: puude_positsioon=0
@@ -174,15 +175,15 @@ while True:
         screen.blit(tekst2, (453,50))   # vari
 
         #puuviljad
-        screen.blit(pygame.transform.scale(banaan, (80, 91)), banaan_rect)
+        if banaanide_arv == 0: screen.blit(pygame.transform.scale(banaan, (80, 91)), banaan_rect)
         banaan_rect.x-=k
-        screen.blit(pygame.transform.scale(ananass, (76, 100)), ananass_rect)
+        if ananasside_arv == 0: screen.blit(pygame.transform.scale(ananass, (76, 100)), ananass_rect)
         ananass_rect.x-=k
-        screen.blit(pygame.transform.scale(apelsin, (80, 80)), apelsin_rect)
+        if apelsinide_arv == 0: screen.blit(pygame.transform.scale(apelsin, (80, 80)), apelsin_rect)
         apelsin_rect.x-=k
-        screen.blit(pygame.transform.scale(maasikas, (80, 98)), maasikas_rect)
+        if maasikate_arv == 0: screen.blit(pygame.transform.scale(maasikas, (80, 98)), maasikas_rect)
         maasikas_rect.x-=k
-        screen.blit(pygame.transform.scale(sidrun, (74, 86)), sidrun_rect)
+        if sidrunite_arv == 0: screen.blit(pygame.transform.scale(sidrun, (74, 86)), sidrun_rect)
         sidrun_rect.x-=k
         
         # herilased
@@ -263,43 +264,44 @@ while True:
             time.sleep(0.2)
             game_active=3
 
-        # collision herilasega
-
-        if kõnd +1>=12:
-            kõnd = 0
-
         # tegelase animatsioon
+
+        if kõnd+1>=12:
+            kõnd= 0
 
         if player ==  'tüdruk':
             plika_gravity+=0.5
             plika_rect.y+=plika_gravity
             if plika_rect.bottom>=360:
                 plika_rect.bottom=360
-            screen.blit(tWalkRight[kõnd//3], plika_rect)
+            screen.blit(tWalkRight[kõnd], plika_rect)
+        
         elif player == 'poiss':
             p_gravity+=0.5
             p_rect.y+=p_gravity
             if p_rect.bottom>=360:
                 p_rect.bottom=360
-            screen.blit(walkRight[kõnd//3], p_rect)
+            screen.blit(walkRight[kõnd//10], p_rect)
+
+        kõnd=+1
 
     
     if game_active==3: # win screen 
         time.sleep(0.5)
         screen.blit(taust, (0,0))
-        screen.blit(pygame.transform.scale(lõpp,(225,175)),(WIDTH/2-112,HEIGHT/2-88))
+        screen.blit(pygame.transform.scale(lõpp,(240*3.5,175*3.5)),(WIDTH/2-120*3.5,HEIGHT/2-88*3.5))
         pygame.display.update()
         print('Palju õnne, olete mängu võitnud!')
-        time.sleep(4.5)
+        time.sleep(5)
         pygame.quit()
         exit()
 
     if game_active== 4: # game over screen
-        time.sleep(2)
+        time.sleep(1)
         screen.blit(pygame.transform.scale(gameover,(WIDTH,HEIGHT)),(0,0))
         pygame.display.update()
         print('Seekord kaotasite, proovige uuesti!')
-        time.sleep(4)
+        time.sleep(3.5)
         pygame.quit()
         exit()
 
