@@ -7,12 +7,11 @@ pygame.init()
 # suurused
 fps = 90
 WIDTH, HEIGHT = 1200,600        # gamewindow suurus
-c_width, c_height = 50, 60   # poisi tegelaskuju suurus
+c_width, c_height = 95,125      # poisi tegelaskuju suurus
 
 # algväärtused
 kõnd = 0
 tegelane='tüdruk'   # character screeni jaoks
-player='tüdruk'     # player
 plika_gravity=0
 p_gravity=0
 k = 4               # tausta kiirus
@@ -67,7 +66,7 @@ p3= pygame.transform.scale(pygame.image.load('p-k6nnib3.png'), (c_width,c_height
 p4= pygame.transform.scale(pygame.image.load('p-k6nnib4.png'), (c_width,c_height)).convert_alpha()
 
 walkRight = [p1,p2,p3,p4,p1,p2,p3,p4,p1,p2,p3,p4,p1]
-p_rect=poiss.get_rect(midbottom=(50, 350))
+p_rect=p1.get_rect(midbottom=(50, 350))
 
 #puude taust
 taust=pygame.image.load('assets/manutaust-1.png.png').convert()
@@ -132,9 +131,9 @@ while True:
         if game_active:
             if event.type==pygame.KEYDOWN: # võimalik on teha üks hüpe ja double-jump aga kui tegelane on juba õhus kõrgel siis ei saa hüpata rohkem
                 if event.key==pygame.K_SPACE and plika_rect.top>=0:
-                    plika_gravity=-14
+                    plika_gravity=-15
                 if event.key==pygame.K_SPACE and p_rect.top>=0:
-                    p_gravity= -14
+                    p_gravity= -15
 
         if event.type==pygame.MOUSEBUTTONDOWN: # chrcter select tegelasevahetus 
             if button2_rect.collidepoint(event.pos):
@@ -227,7 +226,7 @@ while True:
                         print('kokkupõrge herilasega')
                         game_active=4
 
-            if plika_rect.left >= 7000:
+            if plika_rect.x >= 6500:
                 print('out of bounds')
                 game_active=4
 
@@ -255,7 +254,7 @@ while True:
                     print('kokkupõrge herilasega')
                     game_active=4
 
-            if p_rect.left >= 7000:
+            if p_rect.x >= 6500:
                 print('out of bounds')
                 game_active=4
 
@@ -281,7 +280,7 @@ while True:
             p_rect.y+=p_gravity
             if p_rect.bottom>=360:
                 p_rect.bottom=360
-            screen.blit(walkRight[kõnd//10], p_rect)
+            screen.blit(p1, p_rect)
 
         kõnd=+1
 
