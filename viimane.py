@@ -53,6 +53,7 @@ t1=pygame.image.load('assets/piksliplika/plika1.png').convert_alpha()
 t2=pygame.image.load('assets/piksliplika/plika2.png').convert_alpha()
 t3=pygame.image.load('assets/piksliplika/plika3.png').convert_alpha()
 t4=pygame.image.load('assets/piksliplika/plika4.png').convert_alpha()
+
 t_jump = t4
 t_walk = [t1,t3,t2]
 t=t_walk[kõnd]
