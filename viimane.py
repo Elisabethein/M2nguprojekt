@@ -37,12 +37,12 @@ button2_rect=button2.get_rect(topleft=(600,450))
 game_active=1                                                           #märgib seda et alguses oleks üks ekraan
 
 # herilased
-wasp = pygame.transform.scale(pygame.image.load('wasp.png'),(80,90)).convert_alpha()
+wasp = pygame.transform.scale(pygame.image.load('wasp.png'),(70,80)).convert_alpha()
 wasp_rect=wasp.get_rect(midbottom=(8100,150))
 wasp2,wasp3,wasp4,wasp5,wasp6 = wasp,wasp,wasp,wasp,wasp
-wasp2_rect=wasp.get_rect(topleft=(2485,200))
+wasp2_rect=wasp.get_rect(topleft=(2485,230))
 wasp3_rect=wasp.get_rect(topleft=(4000,300))
-wasp4_rect=wasp.get_rect(topleft=(5060,200))
+wasp4_rect=wasp.get_rect(topleft=(5060,230))
 wasp5_rect=wasp.get_rect(topleft=(6700,150))
 wasp6_rect=wasp.get_rect(topleft=(7500,300))
 l = [wasp_rect,wasp2_rect,wasp3_rect,wasp4_rect,wasp5_rect,wasp6_rect]
